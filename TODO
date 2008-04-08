@@ -1,0 +1,5 @@
+TODO:
+        - tidy up a bit and look release some code in the repo
+        - look at features from other webalizer forks (stone steps, etc)
+        - implement a xmlwriting class
+        - refactor code, rip out png and graphwriting code.
