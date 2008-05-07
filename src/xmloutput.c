@@ -169,14 +169,19 @@ int write_month_xml()
    hist_lday[i]  =  l_day;
 
    /* fill in filenames */
-   snprintf(xml_fname, sizeof(xml_fname),"usage_%04d%02d.%s",cur_year,cur_month,".xml");
+   snprintf(xml_fname, sizeof(xml_fname),"%04d%02d.xml",cur_year,cur_month);
 
    /* now do xml stuff... */
    /* first, open the file */
    if ( (xml_fp=open_out_file(xml_fname))==NULL ) return 1;
 
    snprintf(buffer, sizeof(buffer),"%s %d",l_month[cur_month-1],cur_year);
-   /*write_html_head(buffer, out_fp); */
+   write_xml_head(buffer, xml_fp);
+
+	/* temp test of write_xml_head.. */
+   fclose(xml_fp);
+   return(0);
+
    /*month_links(); */
    /* month_total_table(); */
    if (daily_stats) daily_total_table();
@@ -302,13 +307,21 @@ int write_month_xml()
    fclose(out_fp);                        /* close the file                 */
    return (0);                            /* done...                        */
 }
+void write_xml_head(char *period, FILE *out_fp)
+{
+	NLISTPTR lptr;
+	
+	fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+	fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
+	fprintf(xml_fp, "<stats>\n");
+	fprintf(xml_fp, "\t<usage>\n");
+}
 /* END OF DANNYS CUSTOM FUNCTIONS */
 
 
 /*********************************************/
 /* WRITE_HTML_HEAD - output top of HTML page */
 /*********************************************/
-
 void write_html_head(char *period, FILE *out_fp)
 {
    NLISTPTR lptr;                          /* used for HTMLhead processing */
@@ -431,6 +444,7 @@ void write_html_tail(FILE *out_fp)
 /*********************************************/
 /* WRITE_MONTH_HTML - does what it says...   */
 /*********************************************/
+
 
 int write_month_html()
 {

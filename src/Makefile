@@ -11,5 +11,8 @@ all: xmlwebalizer
 xmlwebalizer: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS)
 
+testrun: xmlwebalizer
+	cat ./test/*.log |./xmlwebalizer -p -n `hostname` -Q -C 0 -o ./test/
+
 clean:
 	-rm *.o *~ xmlwebalizer

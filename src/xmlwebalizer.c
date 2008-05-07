@@ -982,7 +982,8 @@ int main(int argc, char *argv[])
             /* if yes, do monthly stuff */
             t_visit=tot_visit(sm_htab);
             month_update_exit(req_tstamp);    /* process exit pages      */
-            write_month_html();               /* generate HTML for month */
+            //write_month_html();               /* generate HTML for month */
+			write_month_xml();
             clear_month();
             cur_month = rec_month;            /* update our flags        */
             cur_year  = rec_year;
@@ -1313,7 +1314,8 @@ int main(int argc, char *argv[])
             }
          }
          month_update_exit(rec_tstamp);      /* calculate exit pages     */
-         write_month_html();                 /* write monthly HTML file  */
+    //write_month_html();                 /* write monthly HTML file  */
+		write_month_xml();
         write_main_xml();                 /* write main HTML file     */
 	//write_main_index();
          put_history();                      /* write history            */
