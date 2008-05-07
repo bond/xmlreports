@@ -69,7 +69,8 @@
 /* internal function prototypes */
 void    write_html_head(char *, FILE *);            /* head of html page   */
 void    write_html_tail(FILE *);                    /* tail of html page   */
-void    month_links();                              /* Page links          */
+void	write_xml_head(char *, FILE *);				/* head of xml document */
+//void    month_links();                              /* Page links          */
 void    month_total_table();                        /* monthly total table */
 void    daily_total_table();                        /* daily total table   */
 void    hourly_total_table();                       /* hourly total table  */
@@ -142,7 +143,77 @@ FILE	 *xml_fp;
 
 
 /* DANNYS NEW XMLOUTPUT FUNCTIONS */
+void month_total_fragment()
+{
+   int i,days_in_month;
+   u_long max_files=0,max_hits=0,max_visits=0,max_pages=0;
+   double max_xfer=0.0;
 
+   days_in_month=(l_day-f_day)+1;
+   for (i=0;i<31;i++)
+   {  /* Get max/day values */
+      if (tm_hit[i]>max_hits)     max_hits  = tm_hit[i];
+      if (tm_file[i]>max_files)   max_files = tm_file[i];
+      if (tm_page[i]>max_pages)   max_pages = tm_page[i];
+      if (tm_visit[i]>max_visits) max_visits= tm_visit[i];
+      if (tm_xfer[i]>max_xfer)    max_xfer  = tm_xfer[i];
+   }
+	fprintf(xml_fp,"\t\t<totals hits=\"%lu\" files=\"%lu\" pages=\"%lu\" visits=\"%lu\" transfered=\"%.0f\" uniq_sites=\"%lu\" uniq_urls=\"%lu\" uniq_usernames=\"%lu\" />\n",
+		t_hit, t_file, t_page, t_visit, t_xfer/1024, t_site, t_url, t_user);
+	fprintf(xml_fp, "\t\t<timed>\n");
+	fprintf(xml_fp, "\t\t\t<hourly hits_avg=\"%lu\" hits_max=\"%lu\" />\n", t_hit/(24*days_in_month), mh_hit);
+	fprintf(xml_fp, "\t\t\t<daily hits_avg=\"%lu\" hits_max=\"%lu\" files_avg=\"%lu\" files_max=\"%lu\" pages_avg=\"%lu\" pages_max=\"%lu\" visits_avg=\"%lu\" visits_max=\"%lu\" transfered_avg=\"%.0f\" transfered_max=\"%.0f\" />\n",
+		t_hit/(24*days_in_month), mh_hit,
+		t_hit/days_in_month, max_hits,
+		t_file/days_in_month, max_files,
+		t_page/days_in_month, max_pages,
+		t_visit/days_in_month, max_visits,
+		(t_xfer/1024)/days_in_month, max_xfer/1024);
+	fprintf(xml_fp, "\t\t</timed>\n");
+	fprintf(xml_fp, "\t\t<errors />\n");
+   // /**********************************************/
+   // /* response code totals */
+   // fprintf(xml_fp,"<TR><TH COLSPAN=3 ALIGN=center BGCOLOR=\"%s\">\n"         \
+   //         "<FONT SIZE=\"-1\">%s</FONT></TH></TR>\n",GREY,msg_mtot_rc);
+   // fprintf(xml_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
+   // for (i=0;i<TOTAL_RC;i++)
+   // {
+   //    if (response[i].count != 0)
+   //       fprintf(xml_fp,"<TR><TD><FONT SIZE=\"-1\">%s</FONT></TD>\n"         \
+   //          "<TD ALIGN=right COLSPAN=2><FONT SIZE=\"-1\"><B>%lu</B>"         \
+   //          "</FONT></TD></TR>\n",
+   //          response[i].desc, response[i].count);
+   // }
+   // fprintf(xml_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
+   // /**********************************************/
+   // 
+   // fprintf(xml_fp,"</TABLE>\n");
+   // fprintf(xml_fp,"<P>\n");
+}
+int daily_total_fragment() {
+	int i;
+
+   /* Daily stats */
+	fprintf(xml_fp,"\t\t<daily>\n");
+	fprintf(xml_fp,"\t\t\t<!-- Note that the transfered-values are in KiloBytes (/1024) -->\n");
+   /* skip beginning blank days in a month */
+   for (i=0;i<hist_lday[cur_month-1];i++) if (tm_hit[i]!=0) break;
+   if (i==hist_lday[cur_month-1]) i=0;
+
+   for (;i<hist_lday[cur_month-1];i++)
+   {
+	fprintf(xml_fp,"\t\t\t<day id=\"%d\" hits=\"%lu\" hits_percent=\"%3.02f%%\" files=\"%lu\" files_percent=\"%3.02f%%\" pages=\"%lu\" pages_percent=\"%3.02f%%\" visits=\"%lu\" visits_percent=\"%3.02f%%\" sites=\"%lu\" sites_percent=\"%3.02f%%\" transfered=\"%.0f\" transfered_percent=\"%3.02f%%\" />\n", i+1, 
+		tm_hit[i], PCENT(tm_hit[i],t_hit), 
+		tm_file[i], PCENT(tm_file[i],t_file),
+		tm_page[i],PCENT(tm_page[i],t_page),
+		tm_visit[i],PCENT(tm_visit[i],t_visit),
+		tm_site[i],PCENT(tm_site[i],t_site),
+		tm_xfer[i]/1024,PCENT(tm_xfer[i],t_xfer));
+   }
+	fprintf(xml_fp,"\t\t</daily>\n");
+	
+	return(1);
+}
 int write_month_xml()
 {
    int i;
@@ -178,13 +249,12 @@ int write_month_xml()
    snprintf(buffer, sizeof(buffer),"%s %d",l_month[cur_month-1],cur_year);
    write_xml_head(buffer, xml_fp);
 
-	/* temp test of write_xml_head.. */
+	
+   month_total_fragment();
+   if (daily_stats) daily_total_fragment();
+
    fclose(xml_fp);
    return(0);
-
-   /*month_links(); */
-   /* month_total_table(); */
-   if (daily_stats) daily_total_table();
 
    if (hourly_stats) hourly_total_table();
 
@@ -313,7 +383,7 @@ void write_xml_head(char *period, FILE *out_fp)
 	
 	fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 	fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
-	fprintf(xml_fp, "<stats>\n");
+	fprintf(xml_fp, "<stats sitename=\"%s\">\n",hname);
 	fprintf(xml_fp, "\t<usage>\n");
 }
 /* END OF DANNYS CUSTOM FUNCTIONS */
@@ -485,7 +555,7 @@ int write_month_html()
 
    snprintf(buffer, sizeof(buffer),"%s %d",l_month[cur_month-1],cur_year);
    write_html_head(buffer, out_fp);
-   month_links();
+   //month_links();
    month_total_table();
    if (daily_graph || daily_stats)        /* Daily stuff */
    {
@@ -621,38 +691,6 @@ int write_month_html()
    write_html_tail(out_fp);               /* finish up the HTML document    */
    fclose(out_fp);                        /* close the file                 */
    return (0);                            /* done...                        */
-}
-
-/*********************************************/
-/* MONTH_LINKS - links to other page parts   */
-/*********************************************/
-
-void month_links()
-{
-   fprintf(out_fp,"<SMALL>\n");
-   if (daily_stats || daily_graph)
-      fprintf(out_fp,"<A HREF=\"#DAYSTATS\">[%s]</A>\n",msg_hlnk_ds);
-   if (hourly_stats || hourly_graph)
-      fprintf(out_fp,"<A HREF=\"#HOURSTATS\">[%s]</A>\n",msg_hlnk_hs);
-   if (ntop_urls || ntop_urlsK)
-      fprintf(out_fp,"<A HREF=\"#TOPURLS\">[%s]</A>\n",msg_hlnk_u);
-   if (ntop_entry)
-      fprintf(out_fp,"<A HREF=\"#TOPENTRY\">[%s]</A>\n",msg_hlnk_en);
-   if (ntop_exit)
-      fprintf(out_fp,"<A HREF=\"#TOPEXIT\">[%s]</A>\n",msg_hlnk_ex);
-   if (ntop_sites || ntop_sitesK)
-      fprintf(out_fp,"<A HREF=\"#TOPSITES\">[%s]</A>\n",msg_hlnk_s);
-   if (ntop_refs && t_ref)
-      fprintf(out_fp,"<A HREF=\"#TOPREFS\">[%s]</A>\n",msg_hlnk_r);
-   if (ntop_search && t_ref)
-      fprintf(out_fp,"<A HREF=\"#TOPSEARCH\">[%s]</A>\n",msg_hlnk_sr);
-   if (ntop_users && t_user)
-      fprintf(out_fp,"<A HREF=\"#TOPUSERS\">[%s]</A>\n",msg_hlnk_i);
-   if (ntop_agents && t_agent)
-      fprintf(out_fp,"<A HREF=\"#TOPAGENTS\">[%s]</A>\n",msg_hlnk_a);
-   if (ntop_ctrys)
-      fprintf(out_fp,"<A HREF=\"#TOPCTRYS\">[%s]</A>\n",msg_hlnk_c);
-   fprintf(out_fp,"</SMALL>\n<P>\n");
 }
 
 /*********************************************/
@@ -2639,7 +2677,7 @@ int write_main_xml()
 
    fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
    fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
-   fprintf(xml_fp, "<stats>\n");
+   fprintf(xml_fp, "<stats sitename=\"%s\">\n", hname);
    fprintf(xml_fp, "\t<monthly>\n");
 
    //write_html_head(msg_main_per, out_fp);
