@@ -170,25 +170,19 @@ void month_total_fragment()
 		t_visit/days_in_month, max_visits,
 		(t_xfer/1024)/days_in_month, max_xfer/1024);
 	fprintf(xml_fp, "\t\t</timed>\n");
-	fprintf(xml_fp, "\t\t<errors />\n");
+	fprintf(xml_fp, "\t\t<responsecodes>\n");
    // /**********************************************/
    // /* response code totals */
-   // fprintf(xml_fp,"<TR><TH COLSPAN=3 ALIGN=center BGCOLOR=\"%s\">\n"         \
-   //         "<FONT SIZE=\"-1\">%s</FONT></TH></TR>\n",GREY,msg_mtot_rc);
-   // fprintf(xml_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
-   // for (i=0;i<TOTAL_RC;i++)
-   // {
-   //    if (response[i].count != 0)
-   //       fprintf(xml_fp,"<TR><TD><FONT SIZE=\"-1\">%s</FONT></TD>\n"         \
-   //          "<TD ALIGN=right COLSPAN=2><FONT SIZE=\"-1\"><B>%lu</B>"         \
-   //          "</FONT></TD></TR>\n",
-   //          response[i].desc, response[i].count);
-   // }
-   // fprintf(xml_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
-   // /**********************************************/
-   // 
-   // fprintf(xml_fp,"</TABLE>\n");
-   // fprintf(xml_fp,"<P>\n");
+   for (i=0;i<TOTAL_RC;i++)
+   {
+      if (response[i].count != 0)
+		 fprintf(xml_fp, "")
+         fprintf(xml_fp,"<TR><TD><FONT SIZE=\"-1\">%s</FONT></TD>\n"         \
+            "<TD ALIGN=right COLSPAN=2><FONT SIZE=\"-1\"><B>%lu</B>"         \
+            "</FONT></TD></TR>\n",
+            response[i].desc, response[i].count);
+   }
+	fprintf(xml_fp, "\t\t</responsecodes>\n");
 }
 int daily_total_fragment() {
 	int i;
