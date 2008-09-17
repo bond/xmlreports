@@ -162,7 +162,6 @@ void month_total_fragment()
 	fprintf(xml_fp, "\t\t<timed>\n");
 	fprintf(xml_fp, "\t\t\t<hourly hits_avg=\"%lu\" hits_max=\"%lu\" />\n", t_hit/(24*days_in_month), mh_hit);
 	fprintf(xml_fp, "\t\t\t<daily hits_avg=\"%lu\" hits_max=\"%lu\" files_avg=\"%lu\" files_max=\"%lu\" pages_avg=\"%lu\" pages_max=\"%lu\" visits_avg=\"%lu\" visits_max=\"%lu\" transfered_avg=\"%.0f\" transfered_max=\"%.0f\" />\n",
-		t_hit/(24*days_in_month), mh_hit,
 		t_hit/days_in_month, max_hits,
 		t_file/days_in_month, max_files,
 		t_page/days_in_month, max_pages,
