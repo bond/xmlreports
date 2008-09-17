@@ -124,7 +124,8 @@
 #endif
 
 /* Response code structure */
-struct response_code {     char    *desc;         /* response code struct  */
+struct response_code {   int       resp_code;
+                         char     *desc;         /* response code struct  */
                          u_long    count; };
 
 /* Country code structure */

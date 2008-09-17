@@ -1,4 +1,5 @@
-CFLAGS = -Wall -O2
+# CFLAGS = -Wall -O2
+CFLAGS = -Wall -g
 LDFLAGS = -lz -lm
 CC = cc
 OBJS = xmlwebalizer.o hashtab.o linklist.o preserve.o parser.o xmloutput.o dns_resolv.o
@@ -12,7 +13,7 @@ xmlwebalizer: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS)
 
 testrun: xmlwebalizer
-	cat ./test/*.log |./xmlwebalizer -p -n `hostname` -Q -C 0 -o ./test/
+	cat ./test/*.log |./xmlwebalizer -p -n `hostname` -C 0 -o ./test/
 
 clean:
 	rm *.o *~ xmlwebalizer test/*.xml test/webalizer.*
