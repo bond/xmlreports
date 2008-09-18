@@ -1078,7 +1078,8 @@ void top_users_fragment()
    if ( (tot_num=i_reg+i_grp)==0 ) return;              /* split if none    */
    if (tot_num > ntop_users) tot_num = ntop_users;
 
-   fprintf(out_fp,"<A NAME=\"TOPUSERS\"></A>\n");       /* now do <A> tag   */
+   /*
+   fprintf(out_fp,"<A NAME=\"TOPUSERS\"></A>\n");      
 
    fprintf(out_fp,"<TABLE WIDTH=510 BORDER=2 CELLSPACING=1 CELLPADDING=1>\n");
    fprintf(out_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
@@ -1100,16 +1101,18 @@ void top_users_fragment()
           "<FONT SIZE=\"-1\">%s</FONT></TH></TR>\n",CYAN,msg_h_uname);
    fprintf(out_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
 
+
+
    pointer=i_array; i=0;
    while(tot_num)
    {
       iptr=*pointer++;
       if (iptr->flag != OBJ_HIDE)
       {
-         /* shade grouping? */
-         if (shade_groups && (iptr->flag==OBJ_GRP))
+         // shade grouping?
+          if (shade_groups && (iptr->flag==OBJ_GRP))
             fprintf(out_fp,"<TR BGCOLOR=\"%s\">\n", GRPCOLOR);
-         else fprintf(out_fp,"<TR>\n");
+         else fprintf(out_fp,"<TR>\n"); 
 
          fprintf(out_fp,
               "<TD ALIGN=center><FONT SIZE=\"-1\"><B>%d</B></FONT></TD>\n"  \
@@ -1134,7 +1137,7 @@ void top_users_fragment()
          else fprintf(out_fp,"%s</FONT></TD></TR>\n",
                iptr->string);
          tot_num--;
-         i++;
+         i++; 
       }
    }
 
@@ -1151,7 +1154,7 @@ void top_users_fragment()
          fprintf(out_fp,"%s</A></TD></TR>\n",msg_v_users);
       }
    }
-   fprintf(out_fp,"</TABLE>\n<P>\n");
+   fprintf(out_fp,"</TABLE>\n<P>\n"); */
 }
 
 /*********************************************/

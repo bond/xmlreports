@@ -16,4 +16,4 @@ testrun: xmlwebalizer
 	cat ./test/*.log |./xmlwebalizer -p -n `hostname` -C 0 -o ./test/
 
 clean:
-	rm *.o *~ xmlwebalizer test/*.xml test/webalizer.*
+	rm -f *.o *~ xmlwebalizer test/*.xml test/webalizer.*
