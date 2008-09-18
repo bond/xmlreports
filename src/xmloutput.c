@@ -373,7 +373,7 @@ void write_xml_head(char *period, FILE *out_fp)
 	
 	fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 	fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
-	fprintf(xml_fp, "<stats sitename=\"%s\">\n",hname);
+	fprintf(xml_fp, "<stats sitename=\"%s\" period=\"%s\">\n",hname, period);
 	fprintf(xml_fp, "\t<usage>\n");
 }
 
