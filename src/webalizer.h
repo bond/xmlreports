@@ -1,3 +1,5 @@
+#include "config.h"
+
 #ifndef _WEBALIZER_H
 #define _WEBALIZER_H
 
