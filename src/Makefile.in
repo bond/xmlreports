@@ -1,0 +1,39 @@
+SHELL = @SHELL@
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+
+sysconfdir = @sysconfdir@
+bindir = @bindir@
+libdir = @libdir@
+
+RM = /bin/rm
+CC = @CC@
+CFLAGS = -I. @CFLAGS@
+LDFLAGS = -lz -lm @LDFLAGS@
+OBJFLAGS = -DETCDIR=\"${sysconfdir}\"
+LIBS = @LIBS@
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+prefix = @prefix@
+
+
+OBJS = xmlwebalizer.o hashtab.o linklist.o preserve.o parser.o xmloutput.o dns_resolv.o
+
+all: xmlwebalizer
+
+%.o: %.c
+	$(CC) -c $^ $(CFLAGS) $(OBJFLAGS)
+
+xmlwebalizer: $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS)
+	
+install: xmlwebalizer
+	$(INSTALL)
+
+clean:
+	$(RM) -f *.o xmlwebalizer config.h
