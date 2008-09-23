@@ -6,7 +6,7 @@ VPATH = @srcdir@
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-
+prefix = @prefix@
 sysconfdir = @sysconfdir@
 bindir = @bindir@
 libdir = @libdir@
@@ -21,7 +21,6 @@ LIBS = @LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
-prefix = @prefix@
 
 
 OBJS = xmlwebalizer.o hashtab.o linklist.o preserve.o parser.o xmloutput.o dns_resolv.o
