@@ -1,0 +1,14 @@
+AC_INIT(xmlreports,0.0.1)
+AC_PROG_CC
+AC_PROG_INSTALL
+
+AC_CHECK_HEADERS(getopt.h,,[AC_MSG_ERROR([You need this!])])
+AC_CHECK_HEADERS(math.h,,[AC_MSG_ERROR([You need this!])])
+
+AC_CHECK_FUNCS(getopt)
+
+AC_CONFIG_HEADER(src/config.h)
+
+AC_CONFIG_FILES([src/Makefile Makefile])
+
+AC_OUTPUT

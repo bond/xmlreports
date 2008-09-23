@@ -1,0 +1,11 @@
+all:
+		cd src && $(MAKE) all
+		
+autoclean:
+		@rm -rf configure autom4te.cache &&	autoconf && ./configure
+		
+install:
+		cd src && $(MAKE) install
+		
+clean:
+		cd src && $(MAKE) clean
