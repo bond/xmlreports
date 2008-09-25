@@ -1811,7 +1811,7 @@ int write_main_xml()
 
    fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
    fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
-   fprintf(xml_fp, "<stats sitename=\"%s\">\n", hname);
+   fprintf(xml_fp, "<statsindex sitename=\"%s\">\n", hname);
    fprintf(xml_fp, "\t<monthly>\n");
 
    //write_html_head(msg_main_per, out_fp);
@@ -1923,7 +1923,7 @@ int write_main_xml()
    fprintf(out_fp,"</TABLE>\n");
    write_html_tail(out_fp);
    fclose(out_fp); */
-   fprintf(xml_fp,"</stats>\n");
+   fprintf(xml_fp,"</statsindex>\n");
    fclose(xml_fp);
    return 0;
 }
