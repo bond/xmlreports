@@ -14,9 +14,8 @@ libdir = @libdir@
 RM = rm
 MKDIR = mkdir
 CC = @CC@
-CFLAGS = -I. @CFLAGS@
+CFLAGS = -I. -DETCDIR=\"${sysconfdir}\" @CFLAGS@
 LDFLAGS = -lz -lm @LDFLAGS@
-OBJFLAGS = -DETCDIR=\"${sysconfdir}\"
 LIBS = @LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
