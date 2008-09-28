@@ -70,6 +70,7 @@
 void	write_xml_head(char *, FILE *);				/* head of xml document */
 void  write_xml_tail(FILE *);       /* foot of xml document */
 //void    month_links();                              /* Page links          */
+void 	top_ctry_table(FILE *);					/* ???? */
 void    month_total_table();                        /* monthly total table */
 void    daily_total_table();                        /* daily total table   */
 void    hourly_total_fragment();                       /* hourly total table  */
@@ -137,7 +138,7 @@ SNODEPTR *s_array      = NULL;                /* search strings           */
 INODEPTR *i_array      = NULL;                /* ident strings (username) */
 u_long   a_ctr         = 0;                   /* counter for sort array   */
 
-FILE     *out_fp;
+//FILE     *out_fp;
 FILE	 *xml_fp;
 
 
@@ -361,13 +362,13 @@ int write_month_xml()
     else if (verbose) fprintf(stderr,"%s [a_array]\n",msg_nomem_ta); /* err */
    }
 
-   if (ntop_ctrys ) top_ctry_table();     /* top countries table            */
+   if (ntop_ctrys ) top_ctry_table(xml_fp);     /* top countries table            */
 
    write_xml_tail(xml_fp);               /* finish up the HTML document    */
    fclose(xml_fp);                        /* close the file                 */
    return (0);                            /* done...                        */
 }
-void write_xml_head(char *period, FILE *out_fp)
+void write_xml_head(char *period, FILE *xml_fp)
 {
 	NLISTPTR lptr;
 	
@@ -377,7 +378,7 @@ void write_xml_head(char *period, FILE *out_fp)
 	fprintf(xml_fp, "\t<usage>\n");
 }
 
-void write_xml_tail(FILE *out_fp)
+void write_xml_tail(FILE *xml_fp)
 {
   fprintf(xml_fp, "\t</usage>\n</stats>\n");
 }
@@ -1234,7 +1235,7 @@ int all_users_page(u_long i_reg, u_long i_grp)
 /* TOP_CTRY_TABLE - top countries table      */
 /*********************************************/
 
-void top_ctry_table()
+void top_ctry_table(FILE *out_fp)
 {
    int i,j,x,tot_num=0,tot_ctry=0;
    int ctry_fnd;
@@ -1310,62 +1311,23 @@ void top_ctry_table()
       }
    }
 
-   /* put our anchor tag first... */
-   fprintf(out_fp,"<A NAME=\"TOPCTRYS\"></A>\n");
+   fprintf(out_fp, "\t\t<countries>\n");
 
-   /* generate pie chart if needed */
-   if (ctry_graph)
-   {
-      for (i=0;i<10;i++) pie_data[i]=0;             /* init data array      */
-      if (ntop_ctrys<10) j=ntop_ctrys; else j=10;   /* ensure data size     */
-
-      for (i=0;i<j;i++)
-      {
-         pie_data[i]=top_ctrys[i]->count;           /* load the array       */
-         pie_legend[i]=top_ctrys[i]->desc;
-      }
-      snprintf(pie_title, sizeof(pie_title),"%s %s %d",msg_ctry_use,l_month[cur_month-1],cur_year);
-      snprintf(pie_fname, sizeof(pie_fname),"ctry_usage_%04d%02d.png",cur_year,cur_month);
-
-      //pie_chart(pie_fname,pie_title,t_hit,pie_data,pie_legend);  /* do it   */
-
-      /* put the image tag in the page */
-      fprintf(out_fp,"<IMG SRC=\"%s\" ALT=\"%s\" " \
-                  "HEIGHT=300 WIDTH=512><P>\n",pie_fname,pie_title);
-   }
-
-   /* Now do the table */
-   for (i=0;i<ntop_ctrys;i++) if (top_ctrys[i]->count!=0) tot_num++;
-   fprintf(out_fp,"<TABLE WIDTH=510 BORDER=2 CELLSPACING=1 CELLPADDING=1>\n");
-   fprintf(out_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
-   fprintf(out_fp,"<TR><TH BGCOLOR=\"%s\" ALIGN=CENTER COLSPAN=8>"         \
-           "%s %d %s %d %s</TH></TR>\n",
-           GREY,msg_top_top,tot_num,msg_top_of,tot_ctry,msg_top_c);
-   fprintf(out_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
-   fprintf(out_fp,"<TR><TH BGCOLOR=\"%s\" ALIGN=center>"                   \
-          "<FONT SIZE=\"-1\">#</FONT></TH>\n",GREY);
-   fprintf(out_fp,"<TH BGCOLOR=\"%s\" ALIGN=center COLSPAN=2>"             \
-          "<FONT SIZE=\"-1\">%s</FONT></TH>\n",DKGREEN,msg_h_hits);
-   fprintf(out_fp,"<TH BGCOLOR=\"%s\" ALIGN=center COLSPAN=2>"             \
-          "<FONT SIZE=\"-1\">%s</FONT></TH>\n",LTBLUE,msg_h_files);
-   fprintf(out_fp,"<TH BGCOLOR=\"%s\" ALIGN=center COLSPAN=2>"             \
-          "<FONT SIZE=\"-1\">%s</FONT></TH>\n",RED,msg_h_xfer);
-   fprintf(out_fp,"<TH BGCOLOR=\"%s\" ALIGN=center>"                       \
-          "<FONT SIZE=\"-1\">%s</FONT></TH></TR>\n",CYAN,msg_h_ctry);
-   fprintf(out_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
+   /* Meat */
    for (i=0;i<ntop_ctrys;i++)
    {
       if (top_ctrys[i]->count!=0)
-      fprintf(out_fp,"<TR>"                                                \
-              "<TD ALIGN=center><FONT SIZE=\"-1\"><B>%d</B></FONT></TD>\n" \
-              "<TD ALIGN=right><FONT SIZE=\"-1\"><B>%lu</B></FONT></TD>\n" \
-              "<TD ALIGN=right><FONT SIZE=\"-2\">%3.02f%%</FONT></TD>\n"   \
-              "<TD ALIGN=right><FONT SIZE=\"-1\"><B>%lu</B></FONT></TD>\n" \
-              "<TD ALIGN=right><FONT SIZE=\"-2\">%3.02f%%</FONT></TD>\n"   \
-              "<TD ALIGN=right><FONT SIZE=\"-1\"><B>%.0f</B></FONT></TD>\n" \
-              "<TD ALIGN=right><FONT SIZE=\"-2\">%3.02f%%</FONT></TD>\n"   \
-              "<TD ALIGN=left NOWRAP><FONT SIZE=\"-1\">%s</FONT></TD></TR>\n",
-              i+1,top_ctrys[i]->count,
+      fprintf(out_fp, "\t\t\t<country"
+		" id=\"%d\""
+		" hits=\"%d\""
+		" hit_percent=\"%3.02f%%\""
+		" files=\"%d\""
+		" files_precent=\"%3.02f%%\""
+		" kbytes=\"%.0f\""
+		" kbytes_percent=\"%3.02f%%\""
+		" country=\"%s\">\n",
+              i+1,
+		top_ctrys[i]->count,
               (t_hit==0)?0:((float)top_ctrys[i]->count/t_hit)*100.0,
               top_ctrys[i]->files,
               (t_file==0)?0:((float)top_ctrys[i]->files/t_file)*100.0,
@@ -1373,8 +1335,7 @@ void top_ctry_table()
               (t_xfer==0)?0:((float)top_ctrys[i]->xfer/t_xfer)*100.0,
               top_ctrys[i]->desc);
    }
-   fprintf(out_fp,"<TR><TH HEIGHT=4></TH></TR>\n");
-   fprintf(out_fp,"</TABLE>\n<P>\n");
+   fprintf(out_fp, "\t\t</countries>\n");
 }
 
 /*********************************************/
@@ -1635,6 +1596,7 @@ int write_main_index()
    double  gt_visits=0.0;
    char    index_fname[256];
    char    buffer[BUFSIZE];
+   FILE	   *out_fp;
 
    if (verbose>1) printf("%s\n",msg_gen_sum);
 
