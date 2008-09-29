@@ -1,5 +1,10 @@
 TODO:
-        - tidy up a bit and look release some code in the repo
+		- remove HTML stuff from xmloutput.c (write and test xml-stuff as nessesary)
+		- implement all functions as of webalizer with default patchset (make sure dns, geoip etc. works).
+		- add more tests in configure.in
+		- figure out what to do with stylesheets (cmd/config parameter?)
+		
+
+IDEAS:
         - look at features from other webalizer forks (stone steps, etc)
         - implement a xmlwriting class
-        - refactor code, rip out png and graphwriting code.
