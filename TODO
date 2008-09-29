@@ -3,7 +3,7 @@ TODO:
 		- implement all functions as of webalizer with default patchset (make sure dns, geoip etc. works).
 		- add more tests in configure.in
 		- figure out what to do with stylesheets (cmd/config parameter?)
-		
+		- make more usable xml structure
 
 IDEAS:
         - look at features from other webalizer forks (stone steps, etc)
