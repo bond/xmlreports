@@ -1325,7 +1325,7 @@ void top_ctry_table(FILE *out_fp)
 		" files_precent=\"%3.02f%%\""
 		" kbytes=\"%.0f\""
 		" kbytes_percent=\"%3.02f%%\""
-		" country=\"%s\">\n",
+		" country=\"%s\"/>\n",
               i+1,
 		top_ctrys[i]->count,
               (t_hit==0)?0:((float)top_ctrys[i]->count/t_hit)*100.0,
