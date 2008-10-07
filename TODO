@@ -4,6 +4,8 @@ TODO:
 		- add more tests in configure.in
 		- figure out what to do with stylesheets (cmd/config parameter?)
 		- make more usable xml structure
+		- add versions from autoconf in webalizer.h
+		- add stylesheet to config-file
 
 IDEAS:
         - look at features from other webalizer forks (stone steps, etc)

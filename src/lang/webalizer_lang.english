@@ -154,6 +154,7 @@ char *h_msg[]= {
          "-X        = Hide individual sites"               ,
          "-D name   = Use DNS Cache file 'name'"           ,
          "-N num    = Number of DNS processes (0=disable)" ,
+         "-z uri    = XSL uri to include in xml files",
          NULL};
 
 /***********************************************************************/

@@ -373,7 +373,9 @@ void write_xml_head(char *period, FILE *xml_fp)
 	NLISTPTR lptr;
 	
 	fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-	fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
+	
+	if(stylesheet) fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"%s\" ?>\n", stylesheet);
+	
 	fprintf(xml_fp, "<stats sitename=\"%s\" period=\"%s\">\n",hname, period);
 	fprintf(xml_fp, "\t<usage>\n");
 }
@@ -1772,7 +1774,9 @@ int write_main_xml()
    }
 
    fprintf(xml_fp, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-   fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"stats.xsl\" ?>\n");
+
+   if (stylesheet) fprintf(xml_fp, "<?xml-stylesheet type=\"text/xsl\" href=\"%s\" ?>\n", stylesheet);
+
    fprintf(xml_fp, "<statsindex sitename=\"%s\">\n", hname);
    fprintf(xml_fp, "\t<monthly>\n");
 

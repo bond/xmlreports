@@ -193,6 +193,7 @@ extern char    *out_dir     ;                 /* output directory         */
 extern char    *blank_str   ;                 /* blank string             */
 extern char    *dns_cache   ;                 /* DNS cache file name      */
 extern int     dns_children ;                 /* # of DNS children        */
+extern char    *stylesheet  ;                 /* XSL stylesheet to use    */
 
 extern int     ntop_sites   ;                 /* top n sites to display   */
 extern int     ntop_sitesK  ;                 /* top n sites (by kbytes)  */

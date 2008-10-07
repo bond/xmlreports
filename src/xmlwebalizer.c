@@ -100,9 +100,9 @@ char    *our_gzgets(gzFile, char *, int);           /* our gzgets          */
 /* GLOBAL VARIABLES                          */
 /*********************************************/
 
-char    *version     = "2.01";                /* program version          */
-char    *editlvl     = "10";                  /* edit level               */
-char    *moddate     = "16-Apr-2002";         /* modification date        */
+char    *version     = "0.01";                /* program version          */
+char    *editlvl     = "11";                  /* edit level               */
+char    *moddate     = "07-Oct-2008";         /* modification date        */
 char    *copyright   = "Copyright 1997-2001 by Bradford L. Barrett";
 
 int     verbose      = 2;                     /* 2=verbose,1=err, 0=none  */ 
@@ -139,6 +139,7 @@ char    *out_dir     = NULL;                  /* output directory         */
 char    *blank_str   = "";                    /* blank string             */
 char    *dns_cache   = NULL;                  /* DNS cache file name      */
 int     dns_children = 0;                     /* DNS children (0=don't do)*/
+char	*stylesheet	 = NULL;				  /* XSL URI string (in xml)  */
 
 int     ntop_sites   = 30;                    /* top n sites to display   */
 int     ntop_sitesK  = 10;                    /* top n sites (by kbytes)  */
@@ -273,7 +274,7 @@ int main(int argc, char *argv[])
 
    /* get command line options */
    opterr = 0;     /* disable parser errors */
-   while ((i=getopt(argc,argv,"a:A:b:c:C:dD:e:E:fF:g:GhHiI:l:Lm:M:n:N:o:pP:qQr:R:s:S:t:Tu:U:vVx:XY"))!=EOF)
+   while ((i=getopt(argc,argv,"a:A:b:c:C:dD:e:E:fF:g:GhHiI:l:Lm:M:n:N:o:pP:qQr:R:s:S:t:Tu:U:vVx:XYz:Z:"))!=EOF)
    {
       switch (i)
       {
@@ -320,6 +321,7 @@ int main(int argc, char *argv[])
         case 'x': html_ext=optarg;           break;  /* HTML file extension */
         case 'X': hide_sites=1;              break;  /* Hide ind. sites     */
         case 'Y': ctry_graph=0;              break;  /* Supress ctry graph  */
+        case 'z': stylesheet=optarg;		 break;	 /* xsl stylesheet      */
       }
    }
 
