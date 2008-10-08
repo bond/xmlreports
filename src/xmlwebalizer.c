@@ -129,8 +129,8 @@ int     log_type     = LOG_CLF;               /* (0=clf, 1=ftp, 2=squid)  */
 int     group_domains= 0;                     /* Group domains 0=none     */
 int     hide_sites   = 0;                     /* Hide ind. sites (0=no)   */
 char    *hname       = NULL;                  /* hostname for reports     */
-char    *state_fname = "webalizer.current";   /* run state file name      */
-char    *hist_fname  = "webalizer.hist";      /* name of history file     */
+char    *state_fname = "xmlreports.current";   /* run state file name      */
+char    *hist_fname  = "xmlreports.hist";      /* name of history file     */
 char    *html_ext    = "html";                /* HTML file prefix         */
 char    *dump_ext    = "tab";                 /* Dump file prefix         */
 char    *conf_fname  = NULL;                  /* name of config file      */
