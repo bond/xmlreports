@@ -1,1 +1,14 @@
-Currently only a simple hack in the webalizers code, it prints out xml-file for "Main status page".
+XMLReports is a fork of webalizer, our favorite web-analysis software.
+
+The difference is that XMLReports only outputs XML-files (no PNG Charts, no HTML),
+which makes the output highly customizable.
+
+Also we have introduced a new switch (-z URI), which adds a XSL stylesheet header in the XML-files.
+Most browsers support XSL Transformation, so one use could be to have the browser transform the XML 
+into HTML directly.
+
+As another example of use, could be to have a crontab calling "xsltproc", that mails out montly reports
+in a format suited for mail.
+
+For instructions about installing, see the file named INSTALL.
+

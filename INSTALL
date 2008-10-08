@@ -1,0 +1,15 @@
+To install, use the normal configure/build cycle (see .configure --help for all options):
+
+unpack the tarball with tar(8)
+
+./configure --prefix=/usr/local
+make
+make install
+make clean
+
+
+To install the files in a different directory, the normal DESTDIR variable is supported.
+This is us useful for most package-systems. IE:
+
+make install DESTDIR=$RPM_BUILD_ROOT
+
