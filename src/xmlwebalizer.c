@@ -100,7 +100,7 @@ char    *our_gzgets(gzFile, char *, int);           /* our gzgets          */
 /* GLOBAL VARIABLES                          */
 /*********************************************/
 
-char    *version     = "0.01";                /* program version          */
+char    *version     = PACKAGE_VERSION;       /* program version          */
 char    *editlvl     = "11";                  /* edit level               */
 char    *moddate     = "07-Oct-2008";         /* modification date        */
 char    *copyright   = "Copyright 1997-2001 by Bradford L. Barrett";
